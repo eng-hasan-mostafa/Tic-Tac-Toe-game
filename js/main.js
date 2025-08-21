@@ -27,7 +27,9 @@ const gameBoard = (function(){
 
     const markCell = (xCoordinate, yCoordinate, marker) => {
         if(xCoordinate >= 3 || yCoordinate >= 3){
-            throw Error('The selected cell is outside the game board range.')
+            throw Error('The selected cell is outside the game board range.');
+        }else if(gameBoardGrid[xCoordinate][yCoordinate] !== null){
+            throw Error('This cell is already marked!');
         }
         gameBoardGrid[xCoordinate][yCoordinate] = marker;
     };
