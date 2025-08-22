@@ -84,9 +84,66 @@
 }
 
 .btns button:hover {
-    border: 5px #515ecf solid;
+    border: 5px #45b366 solid;
 }
 
 .btns .new-game-btn {
     justify-self: end;
+}
+
+/* Dialog layout */
+dialog {
+    border: none;
+    border-radius: 10px;
+    width: 400px;
+    margin: auto;
+    padding: 25px;
+}
+
+form {
+    display: grid;
+    height: 200px;
+    gap: 20px;
+}
+
+.form-control {
+    display: grid;
+    gap: 5px;
+}
+
+input[type='text'] {
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #dadada;
+}
+
+dialog h2 {
+    justify-self: center;
+}
+
+dialog::backdrop {
+    background-color: #3a3a3a;
+    opacity: 0.5;
+}
+
+button {
+    border: none;
+    background-color: #515ecf;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submit-btn {
+    padding: 5px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.close-btn {    
+    background-color: transparent;
+    color: #515ecf;
+    font-size: 20px;
+    justify-self: start;
 }
