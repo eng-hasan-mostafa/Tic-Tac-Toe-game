@@ -143,4 +143,4 @@ const gameFlow = (function(){
     return {startGame, startRound};
 })();
 
-gameFlow.startGame();
+// gameFlow.startGame();

@@ -8,6 +8,43 @@
     <script defer src="./js/main.js"></script>
 </head>
 <body>
-    
+    <div class="container">
+        <div class="results-board">
+            <div class="player">
+                <h2 class="name">player1</h2>
+                <span class="score">0</span>
+            </div>
+            <div class="player">
+                <h2 class="name">player2</h2>
+                <span class="score">0</span>
+            </div>
+        </div>
+        <div class="game-board">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+    </div>
+    <dialog>
+        <form>
+            <div class="form-row">
+                <label for="player1-name">player1 name</label>
+                <input type="text" name="player1Name" id="player1-name">
+            </div>
+            <div class="form-row">
+                <label for="player2-name">player2-name</label>
+                <input type="text" name="player2Name" id="player2-name">
+            </div>
+            <div class="form-row">
+                <button>Submit</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>
