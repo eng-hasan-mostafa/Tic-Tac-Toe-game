@@ -144,10 +144,3 @@ button {
     margin-top: 20px;
     border-radius: 10px;
 }
-
-.close-btn {    
-    background-color: transparent;
-    color: #515ecf;
-    font-size: 20px;
-    justify-self: start;
-}
