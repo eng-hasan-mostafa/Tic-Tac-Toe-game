@@ -190,15 +190,23 @@ const displayController = (function(){
 
     const renderControlBtns = () => {
         const btnsContainer = document.querySelector('.btns');
+        btnsContainer.textContent='';
 
         const newGameBtn = document.createElement('button');
         newGameBtn.classList.add('new-game-btn');
         newGameBtn.textContent = 'New game';
+        newGameBtn.addEventListener('click', ()=>{
+            displayController.start();
+        });
         btnsContainer.appendChild(newGameBtn);
 
         const newRoundBtn = document.createElement('button');
         newRoundBtn.classList.add('new-round-btn');
         newRoundBtn.textContent = 'New round';
+        newRoundBtn.addEventListener('click', ()=>{
+            gameBoard.cleanGameBoard();
+            displayController.renderGameBoard();
+        });
         btnsContainer.appendChild(newRoundBtn);
     }
 
