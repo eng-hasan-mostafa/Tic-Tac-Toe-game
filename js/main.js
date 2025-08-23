@@ -49,47 +49,38 @@ const gameBoard = (function(){
 const gameFlow = (function(){
     let player1;
     let player2;
+    let playingTurn = 'player1';
 
     const startGame = (firstPlayerName, secondPlayerName) => {
         initialize(firstPlayerName, secondPlayerName);
-        startRound();
-        gameBoard.cleanGameBoard();
         console.log(`player1 score:${player1.getScore()}`);
         console.log(`player2 score:${player2.getScore()}`);
     }
 
     const initialize = (firstPlayerName, secondPlayerName) => {
-        player1 = createPlayer(firstPlayerName, 'x');
-        player2 = createPlayer(secondPlayerName, 'o');
-        displayController.renderResultsBoard(player1, player2);
+        player1 = createPlayer(firstPlayerName, 'X');
+        player2 = createPlayer(secondPlayerName, 'O');
         gameBoard.cleanGameBoard();
         displayController.renderGameBoard();
+        displayController.renderResultsBoard(player1, player2);
         displayController.renderControlBtns();
     };
 
-    const startRound = () => {
-        let counter = 0;    
-        while(true){
-            if(counter%2 == 0){
-              //player1 turn
-              let xCoordinate = 1;
-              let yCoordinate = 2;
-              gameBoard.markCell(xCoordinate, yCoordinate, player1.getMarker());
-            }else{
-              let xCoordinate = 1;
-              let yCoordinate = 1;
-              gameBoard.markCell(xCoordinate, yCoordinate, player2.getMarker());
-            }
+    const play = (xCoordinate, yCoordinate) => {
+        if(checkRoundResult() === 'non-match'){
+            let marker = (playingTurn === 'player1' ? player1.getMarker() : player2.getMarker());
+            gameBoard.markCell(xCoordinate, yCoordinate, marker);
+    
             if(checkRoundResult() === 'match'){
-                let winner = (counter%2 == 0 ? player1 : player2);
+                let winner = (playingTurn === 'player1'? player1 : player2);
                 winner.increaseScore();
-                console.log(`${winner.getName()} WINS! score:${winner.getScore()}`);
-                break;
+                displayController.renderResultsBoard(player1, player2);
             }else if(checkRoundResult() === 'draw'){
                 console.log(`It's a DRAW!`);
-                break;
             }
-            counter++;
+            displayController.renderGameBoard();
+            displayController.renderResultsBoard(player1, player2);
+            playingTurn = (playingTurn === 'player1' ? 'player2' : 'player1');
         }
     };
 
@@ -136,7 +127,7 @@ const gameFlow = (function(){
     };
 
 
-    return {startGame, startRound};
+    return {startGame, play};
 })();
 
 const displayController = (function(){
@@ -155,9 +146,8 @@ const displayController = (function(){
     };
 
     const renderResultsBoard = (player1, player2) => {
-        const mainContainer = document.querySelector('.container');
-        const resultsBoard = document.createElement('div');
-        resultsBoard.classList.add('results-board');
+        const resultsBoard = document.querySelector('.results-board');
+        resultsBoard.textContent = '';
         for(let i = 0; i < 2; i++){
             let playerCard = document.createElement('div');
             playerCard.classList.add('player');
@@ -174,15 +164,13 @@ const displayController = (function(){
 
             resultsBoard.appendChild(playerCard);
         }
-        mainContainer.appendChild(resultsBoard);
     };
 
     const renderGameBoard = () => {
         const gameBoardGrid = gameBoard.getGameBoard();
-        const mainContainer = document.querySelector('.container');
-        const gameBoardContainer = document.createElement('div');
-        gameBoardContainer.classList.add('game-board');
-        
+        const gameBoardContainer = document.querySelector('.game-board');
+        gameBoardContainer.textContent = '';
+
         for(let i = 0; i < 3; i++){
             for(let j = 0; j < 3; j++){
                 let cell = document.createElement('div');
@@ -190,16 +178,18 @@ const displayController = (function(){
                 cell.dataset.xCoordinate = i;
                 cell.dataset.yCoordinate = j;
                 cell.textContent = gameBoardGrid[i][j];
+                cell.addEventListener('click', (event)=>{
+                    let xCoordinate = event.target.dataset.xCoordinate;
+                    let yCoordinate = event.target.dataset.yCoordinate;
+                    gameFlow.play(xCoordinate, yCoordinate);
+                });
                 gameBoardContainer.appendChild(cell);
             }
         }
-        mainContainer.appendChild(gameBoardContainer);
     };
 
     const renderControlBtns = () => {
-        const mainContainer = document.querySelector('.container');
-        const btnsContainer = document.createElement('div');
-        btnsContainer.classList.add('btns');
+        const btnsContainer = document.querySelector('.btns');
 
         const newGameBtn = document.createElement('button');
         newGameBtn.classList.add('new-game-btn');
@@ -210,8 +200,6 @@ const displayController = (function(){
         newRoundBtn.classList.add('new-round-btn');
         newRoundBtn.textContent = 'New round';
         btnsContainer.appendChild(newRoundBtn);
-
-        mainContainer.appendChild(btnsContainer);
     }
 
     return {start, renderResultsBoard, renderGameBoard, renderControlBtns};
